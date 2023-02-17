@@ -1,0 +1,36 @@
+<!ELEMENT Configuration (Properties,Appenders,Loggers)>
+<!ELEMENT Properties (Property+)>
+<!ELEMENT Property (#PCDATA)>
+<!ATTLIST Property name NMTOKEN #REQUIRED>
+<!ELEMENT Appenders (Console,RollingFile+)>
+<!ELEMENT Console (PatternLayout)>
+<!ATTLIST Console name NMTOKEN #REQUIRED>
+<!ATTLIST Console target NMTOKEN #REQUIRED>
+<!ATTLIST Console follow NMTOKEN #REQUIRED>
+<!ELEMENT PatternLayout EMPTY>
+<!ATTLIST PatternLayout pattern CDATA #REQUIRED>
+<!ELEMENT RollingFile (PatternLayout|ThresholdFilter|Policies|DefaultRolloverStrategy)*>
+<!ATTLIST RollingFile name NMTOKEN #REQUIRED>
+<!ATTLIST RollingFile fileName CDATA #REQUIRED>
+<!ATTLIST RollingFile filePattern CDATA #REQUIRED>
+<!ATTLIST RollingFile ignoreExceptions NMTOKEN #REQUIRED>
+<!ELEMENT ThresholdFilter EMPTY>
+<!ATTLIST ThresholdFilter level NMTOKEN #REQUIRED>
+<!ATTLIST ThresholdFilter onMatch NMTOKEN #REQUIRED>
+<!ATTLIST ThresholdFilter onMismatch NMTOKEN #REQUIRED>
+<!ELEMENT Policies (SizeBasedTriggeringPolicy,maxHistory,totalSizeCap)>
+<!ELEMENT SizeBasedTriggeringPolicy EMPTY>
+<!ATTLIST SizeBasedTriggeringPolicy size NMTOKEN #REQUIRED>
+<!ELEMENT maxHistory (#PCDATA)>
+<!ELEMENT totalSizeCap (#PCDATA)>
+<!ELEMENT DefaultRolloverStrategy EMPTY>
+<!ATTLIST DefaultRolloverStrategy max NMTOKEN #REQUIRED>
+<!ELEMENT Loggers (Logger,Root)>
+<!ELEMENT Logger (AppenderRef+)>
+<!ATTLIST Logger name NMTOKEN #REQUIRED>
+<!ATTLIST Logger additivity NMTOKEN #REQUIRED>
+<!ELEMENT AppenderRef EMPTY>
+<!ATTLIST AppenderRef ref NMTOKEN #REQUIRED>
+<!ATTLIST AppenderRef level NMTOKEN #IMPLIED>
+<!ELEMENT Root (AppenderRef+)>
+<!ATTLIST Root level NMTOKEN #REQUIRED>

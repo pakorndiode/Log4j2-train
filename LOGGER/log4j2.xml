@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configuration SYSTEM "log4j2.dtd">
+<Configuration>
+    <Properties>
+        <Property name="LOG_PATTERN">%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Property>
+        <Property name="APP_LOG_ROOT">logs/</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Console>
+
+        <!--LEVEL INFO-->
+        <RollingFile name="isoserveiceInfo"
+                fileName="${APP_LOG_ROOT}/info/isoserveiceInfo.log"
+                filePattern="${APP_LOG_ROOT}/isoserveiceInfo-%d{yyyy-MM-dd}-%i.log" ignoreExceptions="false">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <ThresholdFilter level="warn"  onMatch="DENY" onMismatch="NEUTRAL"/>
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="DENY"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1000MB</totalSizeCap>
+            </Policies>
+        </RollingFile>
+
+        <!--LEVEL DEBUG-->
+        <RollingFile name="isoserveiceDebug"
+                fileName="${APP_LOG_ROOT}/debug/isoserveiceDebug.log"
+                filePattern="${APP_LOG_ROOT}/isoserveiceDebug-%d{yyyy-MM-dd}-%i.log" ignoreExceptions="false">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <ThresholdFilter level="info"  onMatch="DENY" onMismatch="NEUTRAL"/>
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1000MB</totalSizeCap>
+            </Policies>
+        </RollingFile>
+
+        <!--LEVEL ERROR-->
+        <RollingFile name="isoserveiceError"
+                fileName="${APP_LOG_ROOT}/error/isoserveiceError.log"
+                filePattern="${APP_LOG_ROOT}/isoserveiceError-%d{yyyy-MM-dd}-%i.log" ignoreExceptions="false">
+                <ThresholdFilter level="ALL" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1000MB</totalSizeCap>
+            </Policies>
+            <DefaultRolloverStrategy max="1" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.pccth.isoserveice" additivity="false">
+            <AppenderRef ref="isoserveiceInfo" />
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Root level="trace">
+            <AppenderRef level="info" ref="Console" />
+            <AppenderRef level="info" ref="isoserveiceInfo" />
+            <AppenderRef level="debug" ref="isoserveiceDebug" />
+            <AppenderRef level="error" ref="isoserveiceError" />
+        </Root>
+    </Loggers>
+</Configuration>
